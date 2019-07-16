@@ -1,4 +1,11 @@
-<h1>Nova lista</h1>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Lists", lists_path() %></li>
+    <li class="breadcrumb-item active" aria-current="page">New List</li>
+  </ol>
+</nav>
+
+<h3>New list</h3>
 
 <%= form_with scope: :list, url: lists_path, local: true do |form| %>
   <% if @list.errors.any? %>
@@ -13,18 +20,19 @@
       </ul>
     </div>
   <% end %>
-  <p>
-    <%= form.label :title %><br>
-    <%= form.text_field :title %>
-  </p>
-  <p>
-    <%= form.label :public %><br>
-    <%= form.check_box :public %>
-  </p>
   
-  <p>
-    <%= form.submit %>
-  </p>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= form.label :title %><br>
+        <%= form.text_field :title, {class: "form-control"} %>
+      </div>
+      <div class="form-check">
+        <%= form.check_box :public, {class: "form-check-input"} %>
+        <%= form.label :public, {class: "form-check-label"} %><br>
+      </div>
+      <%= form.submit 'Submit', {class: "btn btn-primary"} %>
+    </div>
+  </div>
 <% end %>
 
-<%= link_to "Todas as listas", lists_path() %>

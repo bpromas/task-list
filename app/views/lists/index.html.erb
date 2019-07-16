@@ -3,23 +3,38 @@
   <h2>My Lists</h2>
   <% @lists.each do |list| %>
     <% if current_user == list.user %>
-      <div>
-        <%= link_to list.title, list_path(list) %>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title"><%= link_to list.title, list_path(list) %></h5>
       </div>
+    </div>
     <% end %>
   <% end %>
-  <div>
-      <%= link_to "+", new_list_path() %>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title"><%= link_to fa_icon("plus-square"), new_list_path() %></h5>
+    </div>
   </div>
 <% end %>
 
   <h2>Public Lists</h2>
   <% @lists.each do |list| %>
     <% if list.public %>
-      <div>
-        <%= link_to list.title, list_path(list) %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to list.title, list_path(list) %></h5>
+        </div>
       </div>
     <% end %>
   <% end %>
 
-</table>
+  <h2>Favorite Lists</h2>
+  <% @lists.each do |list| %>
+    <% if Favorite.find_by(list_id: list.id, user: current_user) %>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to list.title, list_path(list) %></h5>
+        </div>
+      </div>
+    <% end %>
+  <% end %>

@@ -1,14 +1,38 @@
-<p>
-<strong>Title:</strong>
-<%= @list.title %>
-</p>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Lists", lists_path() %></li>
+    <li class="breadcrumb-item active" aria-current="page"><%= @list.title %></li>
+  </ol>
+</nav>
+
+<h3>Show list</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+        <label for="list_title">Title</label><br>
+        <input class="form-control" disabled type="text" name="list[title]" id="list_title" value="<%=@list.title%>">
+        </div>
+    </div>
+</div>
 
 
-<%= link_to "Todas as listas", lists_path() %>
+<% if user_signed_in? %>
+    <% if Favorite.find_by(list_id: @list.id, user: current_user) %>
+        <%= button_to remove_favorites_path({list_id: @list.id}), {method: :delete, class: "btn btn-secondary"} do %>
+            <%= fa_icon("star") %> Remove from favorites
+        <% end %>
+    <% else %>
+        <%= button_to add_favorites_path({list_id: @list.id}), {method: :post, class: "btn btn-secondary"} do %>
+            <%= fa_icon("star") %> Add to favorites
+        <% end %>
+    <% end %>
+<% end %>
 <br>
 <% if current_user == @list.user %>
-    <%= link_to "Editar", edit_list_path() %>
-    <%= link_to 'Apagar', list_path(@list),
+    <%= link_to "Edit", edit_list_path(), {class: "btn btn-secondary"} %>
+    <%= link_to 'Delete', list_path(@list),
+    class: "btn btn-danger",
     method: :delete,
-    data: {confirm: "Tem certeza que deseja deletar?"} %>
+    data: {confirm: "Are you sure?"} %>
 <% end %>

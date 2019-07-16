@@ -1,4 +1,11 @@
-<h1>Editar lista</h1>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><%= link_to "Lists", lists_path() %></li>
+    <li class="breadcrumb-item active" aria-current="page"><%= @list.title %></li>
+  </ol>
+</nav>
+
+<h3>Edit list</h3>
  
 <%= form_with(model: @list, local: true) do |form| %>
     <% if @list.errors.any? %>
@@ -13,23 +20,25 @@
         </ul>
         </div>
     <% end %>
- 
-    <p>
-        <%= form.label :title %><br>
-        <%= form.text_field :title %>
-    </p>
-    <p>
-      <%= form.label :public %><br>
-      <%= form.check_box :public %>
-    </p>
+
     
-    <p>
-        <%= form.submit %>
-    </p>
-        
-    <%= link_to 'Apagar', list_path(@list),
-        method: :delete,
-        data: {confirm: "Tem certeza que deseja deletar?"} %>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <%= form.label :title %><br>
+                <%= form.text_field :title, {class: "form-control"} %>
+            </div>
+            <div class="form-check">
+                <%= form.check_box :public, {class: "form-check-input"} %>
+                <%= form.label :public, {class: "form-check-label"} %><br>
+            </div>
+            <%= form.submit 'Submit', {class: "btn btn-primary"} %>
+            <% if current_user == @list.user %>
+                <%= link_to 'Delete', list_path(@list),
+                    class: "btn btn-danger",
+                    method: :delete,
+                    data: {confirm: "Are you sure?"} %>
+            <% end %>
+        </div>
+    </div>
 <% end %>
-        
-<%= link_to 'Todas as listas', lists_path %>
